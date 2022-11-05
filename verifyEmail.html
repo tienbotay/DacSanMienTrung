@@ -1,7 +1,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.1.3/axios.min.js"></script>
 <script>
   verifyEmail = async (token) => {
-    const res = await axios.post("http://localhost:3000/verify", {token:token});
+    const res = await axios.post("http://localhost:3000/verify", {
+      token: token,
+    });
     return res;
   };
 
@@ -12,14 +14,14 @@
 
     verifyEmail(token)
       .then((res) => {
-        console.log(res)
+        console.log(res);
         alert("Tài khoản đã được kích hoạt");
+        window.location.href = "http://127.0.0.1:5500/login.html";
       })
       .catch((err) => {
-        console.log(err)
+        console.log(err);
         alert("Kích hoạt tài khoản không thành công");
+        window.location.href = "http://127.0.0.1:5500/login.html";
       });
-
-      window.location.href = 'http://127.0.0.1:5500/login.html';
   })();
 </script>
