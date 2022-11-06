@@ -371,6 +371,27 @@
     <script>
       const submit = document.querySelector("#submit");
 
+      validatePass = (password, mx = "3", my = "15") => {
+        var password_len = password.length;
+        if (password_len == 0 || password_len >= my || password_len < mx) {
+          alert("Mật khẩu dài từ " + mx + " đến " + my + " kí tự");
+          return false;
+        }
+        console.log("Password correct");
+        return true;
+      };
+
+      validateEmail = (email) => {
+        var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        if (email.match(mailformat)) {
+          console.log("Email correct");
+          return true;
+        } else {
+          alert("Email không hợp lệ");
+          return false;
+        }
+      };
+
       getSubmittedData = () => {
         const form = document.querySelector("#form");
         const formData = new FormData(form);
@@ -383,10 +404,12 @@
         let email = data[0];
         let password = data[1];
 
-        return {
-          email: email,
-          mat_khau: password,
-        };
+        if (validatePass(password) && validateEmail(email)) {
+          return {
+            email: email,
+            mat_khau: password,
+          };
+        }
       };
 
       loginUser = async (userData) => {
@@ -400,7 +423,7 @@
           loginUser(userData)
             .then((res) => {
               alert("Đăng nhập thành công!");
-              window.location.href ="http://127.0.0.1:5500";
+              window.location.href = "http://127.0.0.1:5500";
             })
             .catch((err) => {
               switch (err.response.status) {
