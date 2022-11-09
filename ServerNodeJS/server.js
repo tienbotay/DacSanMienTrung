@@ -29,6 +29,30 @@ app.get('/getCategories', (req, res) => {
           res.send(listCategory);
      })
 })
+app.get('/getCategoriesByID/:id', (req, res) => {
+     const id = req.params.id;
+     modelProducts.cateList((listCategory) => {
+          const categoryByID = listCategory.filter((item) => {
+               return item.ma_pl == id
+          })
+          res.send(categoryByID)
+     })
+})
+app.post('/changeCate/:id',(req,res)=>{
+     const id = req.params.id;
+     const data = req.body
+
+     modelProducts.cateUpdate(id, data)
+})
+app.post('/addCategory', (req, res) => {
+     modelProducts.cateAdd(req.body)
+     res.sendStatus(200)
+})
+app.post('/deleteCategory/:id', (req, res) => {
+     const id = req.params.id
+     modelProducts.cateDelete(id)
+})
+
 app.get('/getProducts', (req, res) => {
      modelProducts.list((listProduct) => {
           res.send(listProduct);
@@ -80,7 +104,7 @@ app.post('/userRegister', (req, res) => {
                var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
                var dateTime = date + ' ' + time + ' ' + req.body.email;
                req.body.id_nd = crypto.createHash('sha1').update(dateTime).digest('hex');
-               req.body.mat_khau = crypto.createHash('sha1').update(req.body.mat_khau     ).digest('hex');
+               req.body.mat_khau = crypto.createHash('sha1').update(req.body.mat_khau).digest('hex');
 
                sendMail(req.body.email, req.body.id_nd)
                modelUsers.create(req.body)
